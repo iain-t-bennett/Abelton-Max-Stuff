@@ -6,7 +6,7 @@ def_fillrat = 1;
 
 declareattribute("def_a", {
       type: "float",
-      min: 0.5,
+      min: 1,
       max: 1.5,
       default: 1.4,
     });
