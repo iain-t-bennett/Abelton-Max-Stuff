@@ -1,4 +1,4 @@
-require("../src/HenonGenClass.js");
+include("./src/HenonGenClass.js");
 
 // config for the M4L patch
 
