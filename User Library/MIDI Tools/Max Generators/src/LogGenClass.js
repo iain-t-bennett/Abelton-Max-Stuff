@@ -63,3 +63,58 @@ class LogGenScale {
 
   
 }
+
+
+
+class LogGenBeat {
+
+  constructor() {
+  }  
+
+  reinit(init_r, init_note, init_threshold) {
+    this.note = init_note;
+    this.r = init_r;
+    this.x0 = 0.5;
+    this.maxstep = 16;
+    this.threshold = init_threshold;
+  }
+
+  logmapStep(xold) {
+    const x = this.r * xold * (1 - xold);
+    post(`x: ${x}\n`);
+    return { x };
+  }
+
+  generateNotes({ clip, scale, grid }) {
+    const notes = [];
+    
+    let startTime = clip.time_selection_start;
+    let xold = this.x0;
+    let step = 0;
+
+    while (startTime < clip.time_selection_end) {
+      if (step === this.maxstep) {
+        step = 0;
+        xold = this.x0;        
+      }
+
+      const { x} = this.logmapStep(xold);
+      xold = x;
+      
+      if (x > this.threshold) {
+
+        notes.push({
+          pitch: this.note,
+          start_time: startTime,
+          duration: grid.interval,
+        });
+      };
+      startTime += grid.interval;
+      step += 1;
+    }
+
+    return notes;
+  }
+  
+}
+
